@@ -1,0 +1,44 @@
+<div *ngIf="this.userInfo !== ''; else inputPage">
+  <app-user-profile
+    [userDetail]="this.userInfo"
+    [userName]="this.value"
+  ></app-user-profile>
+</div>
+<ng-template #inputPage>
+  <div
+    class="flex flex-col items-center w-screen"
+    *ngIf="!isLoading; else elseBlock"
+  >
+    <h2 class="text-3xl my-5">Search GitHub Profile</h2>
+    <h5 class="text-red-500 text-xl w-11/12 max-w-xl" *ngIf="userNotFound">
+      User profile not found
+    </h5>
+    <input
+      *ngIf="userNotFound; else inputElseBlock"
+      type="text"
+      placeholder="Enter user name"
+      value="{{ this.value }}"
+      class="px-5 py-2 rounded-md my-5 text-xl outline-red-500 border-2 border-red-500 w-11/12 max-w-xl"
+      (keyup)="onInput($event)"
+    />
+    <ng-template #inputElseBlock>
+      <input
+        type="text"
+        placeholder="Enter user name"
+        value="{{ this.value }}"
+        class="px-5 py-2 rounded-md my-5 text-xl outline-gray-400 w-11/12 max-w-xl"
+        (keyup)="onInput($event)"
+      />
+    </ng-template>
+    <button
+      class="my-5 bg-blue-500 w-fit px-4 py-2 rounded-lg text-white hover:bg-blue-600"
+      (click)="onClick()"
+    >
+      Search
+    </button>
+  </div>
+
+  <ng-template #elseBlock>
+    <app-loading-screen></app-loading-screen>
+  </ng-template>
+</ng-template>

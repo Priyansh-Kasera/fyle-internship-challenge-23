@@ -3,14 +3,22 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { HttpClientModule } from  '@angular/common/http';
+import { InputPageComponent } from './components/input-page/input-page.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { LoadingScreenComponent } from './components/loading-screen/loading-screen.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    InputPageComponent,
+    UserProfileComponent,
+    LoadingScreenComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

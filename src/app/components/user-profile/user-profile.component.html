@@ -1,0 +1,65 @@
+<div *ngIf="!isLoading; else loadingBlock" class="w-screen  min-h-screen px-5 lg:px-20 py-5 ">
+    <div class="flex flex-col sm:flex-row gap:20 sm:gap-20 w-full ">
+        <img src={{this.userDetail.avatar_url}} class="w-44 h-44 rounded-full border-2 border-gray-300"  />
+        <div class="flex flex-col ">
+            <h1 class="text-4xl mb-6 font-semibold">{{this.userDetail.login}}</h1>
+            <h1 class="text-xl py-1">{{this.userDetail.bio}}</h1>
+
+            <div *ngIf="this.userDetail.location" class="flex items-center gap-2 py-1">
+                <i class="material-icons">location_on</i> 
+                <h1 class="text-xl py-1">{{this.userDetail.location}}</h1>
+            </div>
+                 
+           
+            
+            <a [attr.href]="'https://twitter.com/' + this.userDetail.twitter_username" target="_blank" class="text-xl truncate focus:outline-none focus:border-b-2 focus:border-black" >{{this.userDetail.twitter_username ? "Twitter : https://twitter.com/" + this.userDetail.twitter_username : null}}</a>
+        </div>
+    </div>
+    <div class="flex items-center gap-2 my-5">
+        <i class="material-icons text-3xl mt-1">link</i> 
+        <a href={{this.userDetail.html_url}} class="text-xl truncate focus:outline-none focus:border-b-2 focus:border-black" target="_blank">{{this.userDetail.html_url}}</a>
+    </div>
+    <span class="italic font-medium">No Of Repo Per Page </span>
+    <select [(ngModel)]="this.perPage" (ngModelChange)="onPerPageNoChange()" class="bg-gray-300 border-b border-black">
+        <option *ngFor="let option of options" [value]="option.value">{{ option.label }}</option>
+    </select>
+
+    <ul class="flex flex-row flex-wrap my-5 gap-5 justify-between w-full ">
+        <li *ngFor="let repoDetail of this.repoList" class="border border-black p-5 w-full sm:w-5/12 max-w-sm" >   
+                <a href={{repoDetail.html_url}} target="_blank"  class="focus:outline-blue-700">
+                    <h1 class="text-2xl text-blue-700 font-semibold mb-4 truncate focus:bg-blue-40 ">{{repoDetail.name}}</h1>      
+                </a> 
+                <h1 class=" mb-4 truncate">{{repoDetail.description}}</h1>
+                <ul  class="flex gap-1 flex-wrap">
+                    <li *ngFor="let topic of repoDetail.topics.slice(0,3)" class="p-1.5 text-white  bg-blue-700 rounded-md text-sm w-20 text-center truncate">{{topic}}</li>
+                    <li *ngIf="repoDetail.topics.length > 3" class="text-blue-700 font-semibold text-lg mt-1">+{{repoDetail.topics.length-3}}</li>
+                </ul>
+               
+        </li>
+    </ul>
+    <ul class="flex justify-center my-5 flex-wrap">
+        <li *ngFor="let currPage of this.noOfPages; let i = index">
+        <p *ngIf="i+1===this.pageNo; else elseblock" class="py-2 px-3 border border-gray-400 text-white bg-blue-700 cursor-pointer">{{i+1}}</p>
+        <ng-template #elseblock >
+            <p class="py-2 px-3 border border-gray-400 text-blue-700 cursor-pointer"
+            (click)="changePageNo(i+1)">{{i+1}}</p>
+        </ng-template>
+    </li>
+    </ul>
+    <div class="flex justify-center gap-5 sm:gap-20">
+        <div class="flex items-center    py-2 px-5 rounded-full border border-blue-700 text-blue-700 cursor-pointer hover:bg-blue-700 hover:text-white"
+        (click)="changePageNo(this.pageNo-1)">
+            <i class="material-icons text-xl mt-1">arrow_back</i>
+            <h1>Older</h1>
+        </div>
+        <div class="flex items-center py-2 px-5 rounded-full border border-blue-700 text-blue-700 cursor-pointer hover:bg-blue-700 hover:text-white"
+        (click)="changePageNo(this.pageNo+1)">
+            <h1  >Newer</h1>
+            <i class="material-icons text-xl mt-1">arrow_forward</i> 
+        </div>
+    </div>
+</div>
+
+<ng-template #loadingBlock>
+    <app-loading-screen></app-loading-screen>
+</ng-template>
